@@ -108,13 +108,13 @@ public class SceneManager : MonoBehaviour
 		{
 			if(enemyHubPool.totalInActive > 0)
 			{
-				enemyHubPool.Spawn(ReturnFromThisQuadrant(Random.Range(1,5)), Quaternion.identity);
+				enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5)), Quaternion.identity);
 			}
 			yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
 		}
 	}
 
-	private Vector3 ReturnFromThisQuadrant(int sideNum)
+	private Vector3 returnAvailablePosition(int sideNum)
 	{
 	
 		// sideNum = Top, Right, Bottom, Left

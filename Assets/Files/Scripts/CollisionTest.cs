@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CollisionTest : MonoBehaviour {
-
-
+public class CollisionTest : MonoBehaviour
+{
 
 	private void OnCollisionEnter(Collision hit)
 	{

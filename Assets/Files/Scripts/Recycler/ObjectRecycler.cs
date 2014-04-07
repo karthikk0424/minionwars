@@ -26,7 +26,6 @@ public class ObjectRecycler : RecyclerContract
 	private List<GameObject> recyledObjects = new List<GameObject>();
 	private uint totalRecyledObjects = 0;
 
-
 	#region Getters & Setters
 
 	public int totalPooled
@@ -159,17 +158,15 @@ public class ObjectRecycler : RecyclerContract
 		go.transform.position = Vector3.zero;
 		go.transform.rotation = Quaternion.identity;
 		go.SetActive(true);
-
 	}
 
 	public void Despawn(GameObject go)
 	{
-		GameObject temp =        (from item in recyledObjects
+		GameObject temp =  (from item in recyledObjects
 						   where (item.activeSelf == true && item.gameObject.name == go.name)
 		                   select item.gameObject).First();
 	
 		// Case should be handled when there is no GameObject of 'go'
-
 		if(temp != null)
 		{
 			temp.transform.position = Vector3.zero;
