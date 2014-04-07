@@ -4,11 +4,7 @@
 Temp/
 Obj/
 UnityGenerated/
-Library/
-
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
+Library
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
