@@ -3,12 +3,11 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-
 	private Vector3 dirToTravel;
 
 	private Rigidbody2D thisRigidBody;
 	public float force = 50f;
-	
+
 	private void OnEnable()
 	{
 		dirToTravel = Vector3.zero;
@@ -44,11 +43,11 @@ public class Projectile : MonoBehaviour
 			dirToTravel =  Vector3.Reflect(dirToTravel, hit.contacts[0].normal);
 		}
 	}
-
-	private void OnTriggerEnter (Collider hit)
-	{
-		Vector3 normalVector = hit.ClosestPointOnBounds(this.transform.position).normalized;
-		Debug.Log(normalVector);
-		dirToTravel =  Vector3.Reflect(dirToTravel, dirToTravel);
-	}
+//
+//	private void OnTriggerEnter (Collider hit)
+//	{
+//		Vector3 normalVector = hit.ClosestPointOnBounds(this.transform.position).normalized;
+//		Debug.Log(normalVector);
+//		dirToTravel =  Vector3.Reflect(dirToTravel, dirToTravel);
+//	}
 }

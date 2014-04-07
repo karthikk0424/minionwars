@@ -20,18 +20,26 @@ public class EnemyUnit : MonoBehaviour
 
 	}
 
-	private void OnCollisionEnter(Collision hit)
+	private void OnTriggerEnter(Collider other)
 	{
-		if(hit.gameObject.layer == 8)
+		Debug.Log("ddd");
+		if(other.gameObject.layer == 8)
 		{
-			switch(ThisTypeOfEnemy)
-			{
-				case TypeOfUnit.Hub:
-				this.gameObject.SetActive(false);
-				break;
-			}
+			Destroy(gameObject);
 		}
-
 	}
+//	private void OnCollisionEnter(Collision hit)
+//	{
+//		if(hit.gameObject.layer == 8)
+//		{
+//			switch(ThisTypeOfEnemy)
+//			{
+//				case TypeOfUnit.Hub:
+//				this.gameObject.SetActive(false);
+//				break;
+//			}
+//		}
+//
+//	}
 
 }
