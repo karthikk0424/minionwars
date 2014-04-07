@@ -139,7 +139,7 @@ GameObject:
   - 4: {fileID: 445749628}
   - 108: {fileID: 445749627}
   m_Layer: 0
-  m_Name: Directional light
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
