@@ -3,36 +3,41 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-	private Vector3 dirToTravel;
+	private Vector3 dirToTravel = Vector3.zero;
 
 	private Rigidbody2D thisRigidBody;
 	public float force = 50f;
-
+	private bool project = false;
 	private void OnEnable()
 	{
-		dirToTravel = Vector3.zero;
-		SceneManager.OnProjection += projectileInvoked;
+		//SceneManager.OnProjection += projectileInvoked;
 	//	if(thisRigidBody == null)
 	//	{	thisRigidBody = this.GetComponent<Rigidbody2D>();}
 	}
 
-
-	private void OnDisable ()
+//	private void OnDisable ()
+//	{
+//		//SceneManager.OnProjection -= projectileInvoked;
+//	}
+	public void Project(Vector3 dir, Quaternion forwardAngle)
 	{
-		SceneManager.OnProjection -= projectileInvoked;
-	}
-	
-	private void projectileInvoked(Vector3 dir, Quaternion forwardAngle)
-	{
-		this.transform.position = new Vector3(0f,0f,-1f);
+		this.transform.position = new Vector3(0f,0f,SceneManager.DEFAULT_DEPTH);
 		this.transform.rotation = forwardAngle;
 
 		dirToTravel = dir;
+		Debug.Log(dirToTravel);
+		project = true;
 	}
 
 	private void Update ()
 	{
-		this.transform.rigidbody.MovePosition((this.transform.position + (dirToTravel * Time.deltaTime * force)));
+		if(project = true)
+		{
+			//transform.position = Vector3.Lerp(transform.position, Camera.main.transform.position,Time.deltaTime * 2);
+			this.rigidbody.MovePosition((this.rigidbody.position + (dirToTravel * Time.deltaTime * force)));
+			//rigidbody.MovePosition(rigidbody.position + dirToTravel * Time.deltaTime * force);
+			//rigidbody.MovePosition(rigidbody.position + dirToTravel * Time.deltaTime);
+		}
 	}
 
 	private void OnCollisionEnter(Collision hit)

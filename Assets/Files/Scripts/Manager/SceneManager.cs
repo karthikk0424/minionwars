@@ -5,9 +5,13 @@ public class SceneManager : MonoBehaviour
 {
 	public float distance = 10;
 	public float goDepth = 4;
-	public GameObject Ground, EnemyPrefab, EnemyHubParent;
-	private ObjectRecycler enemyHubPool, enemyProjectilePool;
-
+	public GameObject Ground;
+	public GameObject EnemyHubParent;
+	public GameObject PlayerHubParent;//, EnemyPrefab, EnemyHubParent;
+	public const float DEFAULT_DEPTH = -2.0F;
+	
+	private Vector3 minBounds;
+	private Vector3 maxBounds;
 
 	Vector3 v3ViewPort;
 	Vector3 v3BottomLeft;
@@ -22,18 +26,23 @@ public class SceneManager : MonoBehaviour
 	public delegate void Projectile(Vector3 dirToProject, Quaternion forwardAngle);	
 	public static event Projectile OnProjection;
 
-	private Vector3 minBounds;
-	private Vector3 maxBounds;
-
 	// Use this for initialization
 	private void Start () 
 	{
 		ResizeToTheCamera();
-		enemyHubPool = new ObjectRecycler(EnemyPrefab, 10, EnemyHubParent);
+
+		PlayerBase _playerBase = PlayerHubParent.GetComponent<PlayerBase>();
+		_playerBase.InitPlayerBase();
+
+		EnemyBase _enemyBase = EnemyHubParent.GetComponent<EnemyBase>();
+		_enemyBase.CreateEnemyHub(minBounds,maxBounds);
+
+
+		//enemyHubPool = new ObjectRecycler(EnemyPrefab, 10, EnemyHubParent);
 		// Pooling EnemyUnits
 		// Pooling PlayerProjectiles
 
-		StartCoroutine(this.CreateHub());
+		//StartCoroutine(this.CreateHub());
 	}
 
 	private void OnEnable ()
@@ -99,51 +108,5 @@ public class SceneManager : MonoBehaviour
 		//	Debug.Log(ges.GetSwipeOrDragAngle());
 		//Debug.Log(string.Format("Swipe Vector = (0) \n Swipe Length = {1} \n Twist Angle = {2} \n Pick Object = {3} \n Other Reciever = {4} \n Finger Index = {5} \n Delta Pinch = {6} \n Action Time = {7}",
 		 //         	ges.swipeVector.normalized , ges.swipeLength , ges.twistAngle , ges.pickObject , ges.otherReceiver , ges.fingerIndex , ges.deltaPinch , ges.actionTime));
-	}
-
-
-	private IEnumerator CreateHub()
-	{
-		while(true)
-		{
-			if(enemyHubPool.totalInActive > 0)
-			{
-				enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5)), Quaternion.identity);
-			}
-			yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
-		}
-	}
-
-	private Vector3 returnAvailablePosition(int sideNum)
-	{
-	
-		// sideNum = Top, Right, Bottom, Left
-		switch (sideNum)
-		{
-			//Top
-			case 1:
-				//enemy.transform.position = new Vector3(maxBounds.x, Random.Range(minBounds.y, maxBounds.y), -1f);
-				return (new Vector3(maxBounds.x, Random.Range(minBounds.y, maxBounds.y), -1f));
-				break;
-
-			//Right
-			case 2:
-				return (new Vector3(Random.Range(minBounds.x, maxBounds.y), maxBounds.y, -1f));
-				break;
-
-			//Bottom
-			case 3:
-				return ( new Vector3(Random.Range(minBounds.x, maxBounds.y), minBounds.y, -1f));
-				break;
-
-			//Left
-			case 4:
-				return ( new Vector3(minBounds.x, Random.Range(minBounds.y, maxBounds.y), -1f));
-				break;
-
-			default:
-				goto case 1;
-				break;
-		}
 	}
 }
