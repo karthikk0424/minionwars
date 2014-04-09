@@ -15,7 +15,6 @@ public class PlayerWeapon : PlayerBase {
 			GameObject instance = transform.GetChild(randomNumber).gameObject;
 			instance.SetActive(true);
 			instance.GetComponent<Projectile>().Project(dir,forwardAngle);
-			//Add changes to ObjectRecycler to toggleGame object
 		}
 	}
 }

@@ -23,13 +23,13 @@ public class EnemyHub : EnemyBase
 				//enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5)), Quaternion.identity);
 				enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5), MinimumBound, MaximumBound), Quaternion.identity);
 			}
+
 			yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
 		}
 	}
 
 	private Vector3 returnAvailablePosition(int sideNum, Vector3 minBounds, Vector3 maxBounds)
 	{
-		Debug.Log(minBounds);
 
 		// sideNum = Top, Right, Bottom, Left
 		switch (sideNum)

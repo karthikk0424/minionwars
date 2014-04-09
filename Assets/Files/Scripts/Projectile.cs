@@ -25,7 +25,6 @@ public class Projectile : MonoBehaviour
 		this.transform.rotation = forwardAngle;
 
 		dirToTravel = dir;
-		Debug.Log(dirToTravel);
 		project = true;
 	}
 
