@@ -19,20 +19,20 @@ public class PlayerBase : MonoBehaviour
 		}
 	}
 
-	private void Awake()
+	internal virtual void Awake()
 	{
-		Debug.LogWarning("Player Awake");
+		//Debug.LogWarning("Player Awake");
 	}
 
-	private void OnEnable()
+	internal virtual void OnEnable()
 	{
-		Debug.Log("Player Base OnEnable");
+		//Debug.LogWarning("Player Base OnEnable");
 		EasyTouch.On_SwipeEnd += HandleOn_SwipeEnd;
 	}
 
-	private IEnumerator Start()
+	internal IEnumerator Start()
 	{
-		Debug.Log("Player Base start");
+		//Debug.LogWarning("Player Base start");
 		playerProjectilePool = new ObjectRecycler(PlayerProjectile, 10, "_parentPlProjectilePool");
 
 		while (true)

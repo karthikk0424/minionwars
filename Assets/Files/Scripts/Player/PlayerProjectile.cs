@@ -6,10 +6,16 @@ public class PlayerProjectile : PlayerBase
 	private Vector2 directionToMove = Vector2.zero;
 	private float forceToApply = 10f;
 	private float bounceFactor = 1.0f; //between 0.0f and 1.0f
-	
+
+
+	internal override void Awake ()
+	{
+
+	}
+
 	// Float 0.1f to 1.0f => the more it bounces
 	// float 100 to 400f => the more the speed
-	private void OnEnable()
+	internal override void OnEnable()
 	{
 	//	directionToMove = base.SwipeDirection;
 		directionToMove = this.transform.position;

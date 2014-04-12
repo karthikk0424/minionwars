@@ -4,13 +4,21 @@ using System.Collections;
 public class EnemyHub : EnemyBase 
 {
 
-	private void OnEnable()
+	internal override void Awake()	{}
+
+	internal override void Start()	
 	{
-		base.UponHubToggle(true);
-	//	StartCoroutine(this.FireAProjectile());
+		StartCoroutine(this.FireAProjectile());
+	//	base.SpawnProjectile(this.transform.localPosition);
 	}
 
-	private void OnDisable()
+	internal override void OnEnable()
+	{
+		base.UponHubToggle(true);
+		Debug.Log("Enemy Hub Enable = " + this.transform.name);
+	}
+
+	internal override void OnDisable()
 	{
 		base.UponHubToggle(false);
 	}
@@ -34,6 +42,8 @@ public class EnemyHub : EnemyBase
 	{
 		yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 		base.SpawnProjectile(this.transform.localPosition);
+		Debug.Log(this.transform.name);
+
 		if(this.gameObject.activeSelf == false)
 		{	Debug.LogWarning("Inactive object");}
 	}

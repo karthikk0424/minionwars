@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyBase : MonoBehaviour 
 {
-	private ObjectRecycler enemyHubPool, enemyProjectilePool;
+	private static ObjectRecycler enemyHubPool, enemyProjectilePool;
 
 	public GameObject EnemyHub, EnemyProjectile;
 	private Vector2 _minbound, _maxBound;
@@ -25,25 +25,26 @@ public class EnemyBase : MonoBehaviour
 	}
 	#endregion
 
-	private void Awake()
-	{
-		Debug.Log("Enemy base awake");
-	}
-
-	private void OnEnable()
-	{
-		Debug.Log("Enemy Base OnEnable");
-	}
-
-	private void Start()
+	internal virtual void Awake()
 	{
 		enemyHubPool = new ObjectRecycler(EnemyHub, 10, "_parentEnemyHubPool");
-//		enemyProjectilePool = new ObjectRecycler(EnemyProjectile, 10, "_parentEnemyProjectilePool");
+		enemyProjectilePool = new ObjectRecycler(EnemyProjectile, 10, "_parentEnemyProjectilePool");
+		Debug.LogWarning("Enemy Base Awake");
+	}
+
+	internal virtual void Start()
+	{
+	//	enemyHubPool = new ObjectRecycler(EnemyHub, 10, "_parentEnemyHubPool");
+	//	enemyProjectilePool = new ObjectRecycler(EnemyProjectile, 10, "_parentEnemyProjectilePool");
 		_minbound = SceneManager.Instance.MinimumBounds;
 		_maxBound = SceneManager.Instance.MaximumBounds;
 		this.StartCoroutine(CreateHub());
-		Debug.Log(enemyProjectilePool);
+		Debug.LogWarning(enemyProjectilePool);
 	}
+
+	internal virtual void OnEnable() {}
+
+	internal virtual void OnDisable() {}
 
 	#region Spawning & Despawning related			
 	protected void DespawnHub(GameObject _go)
@@ -58,8 +59,11 @@ public class EnemyBase : MonoBehaviour
 
 	protected void SpawnProjectile(Vector3 _spawnPosition)
 	{
-		enemyProjectilePool.Spawn(_spawnPosition);
-		var _go = enemyProjectilePool.LastActiveGameObject;
+	//	Debug.LogWarning(enemyHubPool);
+
+		GameObject _go = enemyProjectilePool.Spawn(_spawnPosition);
+//		var _go = enemyProjectilePool.LastActiveGameObject;
+		Debug.LogWarning(_go);
 		_go.rigidbody2D.velocity = ((Vector3.zero - _spawnPosition).normalized * 100 * Time.deltaTime);
 	}
 	
@@ -82,7 +86,7 @@ public class EnemyBase : MonoBehaviour
 			if(enemyHubPool.TotalInactive > 0)
 			{
 				//enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5)), Quaternion.identity);
-				enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5), _minbound, _maxBound));
+				enemyHubPool.Spawn(returnAvailablePosition(Random.Range(1,5), _minbound, _maxBound), Quaternion.identity);
 			}
 			
 			yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
