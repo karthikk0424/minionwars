@@ -4,12 +4,15 @@ using System.Collections;
 public class EnemyHub : EnemyBase 
 {
 
-	internal override void Awake()	{}
+	internal override void Awake()	{
+		Debug.LogWarning("Enemy Hub Awake");
+	}
 
 	internal override void Start()	
 	{
 		StartCoroutine(this.FireAProjectile());
 	//	base.SpawnProjectile(this.transform.localPosition);
+		Debug.LogWarning("Enemy Hub Start");
 	}
 
 	internal override void OnEnable()
