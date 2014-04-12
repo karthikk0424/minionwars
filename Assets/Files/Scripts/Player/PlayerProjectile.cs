@@ -1,21 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerProjectile : PlayerBase
+public class PlayerProjectile : MonoBehaviour
 {
 	private Vector2 directionToMove = Vector2.zero;
 	private float forceToApply = 10f;
 	private float bounceFactor = 1.0f; //between 0.0f and 1.0f
-
-
-	internal override void Awake ()
-	{
-
-	}
-
+	
 	// Float 0.1f to 1.0f => the more it bounces
 	// float 100 to 400f => the more the speed
-	internal override void OnEnable()
+	private void OnEnable()
 	{
 	//	directionToMove = base.SwipeDirection;
 		directionToMove = this.transform.position;
@@ -26,16 +20,26 @@ public class PlayerProjectile : PlayerBase
 		this.rigidbody2D.velocity = (directionToMove * (forceToApply * (Time.deltaTime))); 
 	}
 
-
-
-	/*
-	internal void MoveInThisDirection(Vector2 _dir, float _force)
+	private void OnDisable()
 	{
-		directionToMove = _dir;
-		forceToApply = _force;
-		this.rigidbody2D.velocity = (directionToMove * (forceToApply * (Time.deltaTime * 40f))); 
+	
 	}
-	*/
+
+
+//	internal void MoveInThisDirection(Vector2 _dir, float _force)
+//	{
+//		directionToMove = _dir;
+//		forceToApply = _force;
+//		this.rigidbody2D.velocity = (directionToMove * (forceToApply * (Time.deltaTime * 40f))); 
+//	}
+
+	public void OnProjection (Vector3 direction, float force)
+	{
+		Debug.Log("called");
+		directionToMove = direction;
+		forceToApply = force;
+		rigidbody2D.velocity = ( directionToMove * Time.deltaTime * forceToApply );
+	}
 
 	private void OnCollisionEnter2D(Collision2D hit)
 	{
@@ -64,6 +68,6 @@ public class PlayerProjectile : PlayerBase
 
 	internal void DespawnThisGameObject()
 	{
-		base.Despawn(this.gameObject);
+		//base.Despawn(this.gameObject);
 	}
 }

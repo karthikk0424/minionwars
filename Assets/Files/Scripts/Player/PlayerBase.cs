@@ -3,44 +3,32 @@ using System.Collections;
 
 public class PlayerBase : MonoBehaviour
 {
-	public GameObject PlayerProjectile;
-	private ObjectRecycler playerProjectilePool;
-	private bool isLAUNCHING = false;
-
+	protected virtual void InitPlayer() {}
+	//protected virtual void OnProjection(Vector3 direction, Quaternion rotation)	{}
+	protected virtual void HandleOn_SwipeEnd (Gesture gesture)
+	{
+		swipeDirection = gesture.swipeVector.normalized;
+	}
 	private Vector2 swipeDirection = Vector2.zero;
+
+	public void InitiatePlayerStation()
+	{
+		InitPlayer();
+	}
 
 	protected Vector2 SwipeDirection
 	{
 		get{
 			Vector2 _temp = swipeDirection;
 			swipeDirection = Vector2.zero;
-			isLAUNCHING = false;
 			return _temp;
 		}
 	}
 
-	internal virtual void Awake()
+	private void Awake()
 	{
+		gameObject.transform.localScale = PrefabFactory.GetScaledObjec(gameObject);
 		//Debug.LogWarning("Player Awake");
-	}
-
-	internal virtual void OnEnable()
-	{
-		//Debug.LogWarning("Player Base OnEnable");
-		EasyTouch.On_SwipeEnd += HandleOn_SwipeEnd;
-	}
-
-	internal IEnumerator Start()
-	{
-		//Debug.LogWarning("Player Base start");
-		playerProjectilePool = new ObjectRecycler(PlayerProjectile, 10, "_parentPlProjectilePool");
-
-		while (true)
-		{
-			if(Input.touchCount == 5)
-			{	playerProjectilePool.DespawnAll();}
-			yield return null;
-		}
 	}
 
 	private void OnDisable()
@@ -48,9 +36,10 @@ public class PlayerBase : MonoBehaviour
 		EasyTouch.On_SwipeEnd -= HandleOn_SwipeEnd;
 	}
 
-	protected void Despawn(GameObject _go)
+	private void OnEnable()
 	{
-		playerProjectilePool.Despawn(_go);
+		//Debug.LogWarning("Player Base OnEnable");
+		EasyTouch.On_SwipeEnd += HandleOn_SwipeEnd;
 	}
 
 	protected void UponPlProjectileToggled(bool isACTIVE)
@@ -65,47 +54,5 @@ public class PlayerBase : MonoBehaviour
 		}
 	}
 
-	private void HandleOn_SwipeEnd (Gesture gesture)
-	{
-		//GameObject.Find("Projectile").GetComponent<Projectile>().MoveInThisDirection(gesture.swipeVector.normalized, forceMag);
-	/*
-		if(isLAUNCHING == false)
-		{
-			swipeDirection = gesture.swipeVector.normalized;
-			isLAUNCHING = true; 
-			playerProjectilePool.Spawn(swipeDirection);
-		}
-		*/
-
-		swipeDirection = gesture.swipeVector.normalized;
-	
-	//	playerProjectilePool.Spawn(swipeDirection);
-
-
-		/*
-		Swipe Length 100- 500 range
-		Action Time 0.1 to 1f range
-		The lengthier they swipe - the faster it should go. 
-		The longer they swipe
-		 */
-
-		var g = gesture.swipeLength;
-		var h = gesture.twistAngle;
-		var i = gesture.GetSwipeOrDragAngle();
-		var j = gesture.actionTime;
-		var k = gesture.deltaPinch;
-		var l = gesture.deltaPosition;
-
-		Debug.Log(
-				"Swipe Length = " + g +
-				"\n Twist Angle = " + h +
-				"\n Swipe or Drag Angle = " + i +
-				"\n Action Time = " + j +
-				"\n Delta Pinch = " + k +
-				"\n Delta Position = " + l
-				 );
-
-		
-	}
 
 }

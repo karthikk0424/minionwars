@@ -1,35 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class SceneManager : MonoBehaviour
 {
 
 	private Vector2 minBounds, maxBounds;
 
 	public float forceMag = 10; // Prefarbly between 10 to 20
-	public GameObject EnemyHub, PlayerProjectile;
+	public GameObject EnemyHub, PlayerBase;
 
 	private EnemyBase myEnemyBase;
 	private PlayerBase myPlayerBase;
 
+	public List<Vector3> enemyPositions = new List<Vector3>();
 
 	#region Init Methods
 	private void Awake()
 	{
 		instance = this;
+		enemyPositions.Clear();
 	}
 	
 	private void OnEnable()
 	{
-		if(myPlayerBase == null)
-		{ myPlayerBase = GameObject.Find("PlayerBase").GetComponent<PlayerBase>() as PlayerBase;}
-		if(myEnemyBase == null)
-		{	myEnemyBase = GameObject.Find("EnemyBase").GetComponent<EnemyBase>() as EnemyBase;}	
+		resizeAccordingDeviceScreen();
+
+		EnemyBase myEnemyBase = EnemyHub.GetComponent<EnemyBase>();
+		myEnemyBase.InitiateEnemyBase(minBounds,maxBounds);
+
+		PlayerBase myPlayerBase = PlayerBase.GetComponent<PlayerBase>();
+		myPlayerBase.InitiatePlayerStation();
+
+//		if(myPlayerBase == null)
+//		{ myPlayerBase = GameObject.Find("PlayerBase").GetComponent<PlayerBase>() as PlayerBase;}
+//		if(myEnemyBase == null)
+//		{	myEnemyBase = GameObject.Find("EnemyBase").GetComponent<EnemyBase>() as EnemyBase;}	
 	}
 
 	private IEnumerator Start()
 	{
-		resizeAccordingDeviceScreen();
 		while(true)
 		{
 			if(Input.GetKeyDown(KeyCode.Space))
@@ -38,12 +47,6 @@ public class SceneManager : MonoBehaviour
 			}
 			yield return null;
 		}
-	}
-
-
-	private void OnDisable()
-	{
-
 	}
 	
 	#endregion
